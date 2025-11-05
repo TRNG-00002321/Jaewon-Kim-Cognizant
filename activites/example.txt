@@ -1,2 +1,0 @@
-* -- ** -- New changes from develop branch -- ** -- *
-New New Change to Text file
