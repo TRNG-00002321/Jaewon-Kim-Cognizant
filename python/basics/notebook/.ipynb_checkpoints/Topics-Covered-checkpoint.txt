@@ -1,0 +1,13 @@
+(- needs notes, + has notes)
+11/5/2025 Topics:
++String
++Casting
++Classes and Objects
++Iterators
++Module
++Garbage collection - self learning
++Dunder methods -- dir(int)
++String interning 
++List comprehension
++Exception Handling
++Custom Exception - self learning

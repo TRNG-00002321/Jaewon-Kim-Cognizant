@@ -1,0 +1,5 @@
+Hello, Python!
+File handling is easy with Python
+write overwrites the entire file!
+Append allows you to add to a file!
+Make sure to use newline or content will append to the last line like here(see? this is in the same line!)
