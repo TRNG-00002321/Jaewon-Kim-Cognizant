@@ -1,47 +1,39 @@
 #Do the same thing as the todo list manager but using flask
-my_file = "/home/mattycrabs/cognizant/python/basics/assignments/Week-2/Nov-10/tasks.txt"
-
-def add_tasks(task):
-    with open(my_file, "a") as file:
-            file.write(task+":"+"incomplete"+"\n")
-
+import json
+my_file = "/home/mattycrabs/cognizant/python/basics/assignments/Week-2/Nov-10/tasks.json"
+ 
 def view_tasks():
     dictionary = {}
     with open(my_file, "r") as file:
-        for line in file:
-            if not line.strip():
-                continue
-            task, status = line.split(":")
-            dictionary[task] = status
-    return dictionary
+        try:
+            dictionary=json.load(file)
+        except:
+            print("json empty")
+    return dictionary   
+
+def add_tasks(task):
+    dictionary = view_tasks()
+    dictionary[task] = "Incomplete"
+    with open(my_file,"w") as file:
+        json.dump(dictionary, file)
+
 
 def mark_task(mark):
-    temp = {}
-    with open(my_file, "r") as file:
-        for line in file:
-            if not line.strip():
-                continue
-            task, status = line.split(":")
-            if task == mark:
-                status = "Complete"
-            temp[task] = status
+    dictionary = view_tasks()
+    for task, status in dictionary.items():
+        if(task == mark):
+            if(status == "Complete"):
+                dictionary[mark] = "Incomplete"
+            else:
+                dictionary[mark] = "Complete"
+                    
         
     with open(my_file, "w") as file:                 
-        for task, status in temp.items():
-            file.write(task+":"+status+"\n")
+        json.dump(dictionary, file)
 
 
 def delete_task(delete):
-    temp = {}
-    with open(my_file, "r") as file:
-        for line in file:
-            if not line.strip():
-                continue
-            task, status = line.split(":")
-            if task == delete:
-                continue
-            temp[task] = status
-        
+    temp = view_tasks()   
     with open(my_file, "w") as file:                 
-        for task, status in temp.items():
-            file.write(task+":"+status+"\n")
+        newlist = newlist = dict(filter(lambda item: item[0] != delete, temp.items()))       
+        json.dump(newlist, file)
