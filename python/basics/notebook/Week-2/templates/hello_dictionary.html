@@ -1,0 +1,10 @@
+<body>
+    <table>
+        {% for subject, score in dictionary.items() %}
+        <tr>
+            <td>{{ subject }}</td>
+            <td>{{ score }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>

@@ -1,0 +1,27 @@
+<body>
+    <table>
+        {% for task, status in dictionary.items() %}
+        <tr>
+            <td>{{ task }}</td>
+            <td>{{ status }}</td>
+            <td>
+                <form action="http://localhost:5000/mark" method="post">
+                    <input type="hidden" name="mark" value="{{task}}"/>
+                    <input type="submit" value="Finish"/>
+                </form>
+            </td>
+            <td>
+                <form action="http://localhost:5000/delete" method="post">
+                    <input type="hidden" name="delete" value="{{task}}"/>
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <form action="http://localhost:5000/add" method="post">
+        <p>Enter task:</p>
+        <input type ="text" name="task"/><br/>
+        <input type="submit" value="submit"/><br/>
+    </form>
+</body>
