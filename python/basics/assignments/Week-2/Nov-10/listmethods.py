@@ -1,5 +1,5 @@
 #Do the same thing as the todo list manager but using flask
-my_file = "/home/mattycrabs/cognizant/python/basics/assignments/Week-2/tasks.txt"
+my_file = "/home/mattycrabs/cognizant/python/basics/assignments/Week-2/Nov-10/tasks.txt"
 
 def add_tasks(task):
     with open(my_file, "a") as file:
