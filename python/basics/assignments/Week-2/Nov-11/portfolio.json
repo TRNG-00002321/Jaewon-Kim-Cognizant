@@ -1,0 +1,15 @@
+{
+    "Home":{
+        "About Me":"I am a Programming Wizard",
+        "Other info and links:":"Linkedin: www.linkedin.com/me, I can do a back flip, Github: www.github.com/linus-torvalds"
+    },
+    "Projects":{
+        "Full-Stack:":"Springboot+React based app for traacking ai written prompts",
+        "Full-Stack PT2:":"Springboot+React based app for note taking",
+        "Linux:":"I totally made this, dont google it"
+    },
+    "Contacts":{
+        "Phone:":"123-456-7890",
+        "Gmail:":"Me@gmail.com"
+    }
+}
