@@ -23,7 +23,8 @@ def main():
                 category = input("Enter Category: ")
                 description = input("Enter Description: ")
                 expense = Expense(None, amount, category, description)
-                mydatabase.create_expense(conn,cursor,expense)  
+                mydatabase.create_expense(conn,cursor,expense)
+                
             case "2":
                 print("Updating expense...")
                 id = input("Enter id:")
@@ -36,24 +37,24 @@ def main():
                 print("Deleting expense...")
                 id = input("Enter id:")
                 mydatabase.delete_expense(conn,cursor,id)
+                
             case "4":
                 print("View expense...")
                 id = input("Enter id:")
                 print(mydatabase.get_expense(conn,cursor, id))
             case "5":
                 print("Viewing all expenses...")
-                print(mydatabase.get_all_expense(conn,cursor))
+                
             case "6":
                 print("Viewing total expenses by category...")
-                print(mydatabase.get_total_by_category(conn,cursor))
+                print(mydatabase.get_total_by_category())
+                
             case "7":
                 print("Viewing total expenses by date range...")
-                start_date = input("Enter start date (YYYY-MM-DD): ")
-                end_date = input("Enter end date (YYYY-MM-DD): ")
-                print(mydatabase.get_total_by_date_range(conn, cursor, start_date, end_date))
+                
             case "8":
                 print("Viewing total expense...")
-                print(mydatabase.get_total(conn,cursor))
+                print(mydatabase.get_total())
             case "9":
                 print("Exiting program.")
                 break
