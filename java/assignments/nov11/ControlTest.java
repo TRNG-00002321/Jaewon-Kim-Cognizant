@@ -1,3 +1,5 @@
+package nov11;
+
 import java.util.Scanner;
 /*
 11/12 Java Assignments Set 1:
@@ -6,7 +8,7 @@ import java.util.Scanner;
 3) Using while loops, display the mutliplication table up to 10 of an input numeric
 4) Using for loops, print a * staircase such that the nth line has n stars. You can also do a backwards staircase afterwards for symmetry.
  */
-public class Control {
+public class ControlTest {
     public static void dayOfTheWeek(Scanner scanner){
         System.out.println("Day of the Week: ");
         System.out.println("Enter number: ");
@@ -90,10 +92,10 @@ public class Control {
 
     public static void main(String[] args) {
         try(Scanner scanner = new Scanner(System.in)){
-            Control.dayOfTheWeek(scanner);
-            Control.greatestValue(scanner);
-            Control.myStaircase(scanner);
-            Control.timesTable(scanner);
+            ControlTest.dayOfTheWeek(scanner);
+            ControlTest.greatestValue(scanner);
+            ControlTest.myStaircase(scanner);
+            ControlTest.timesTable(scanner);
         }
     }
 }
