@@ -5,11 +5,12 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        //add menu interface with scanner, use do while loop
-        ArrayList<Employee> employees = new ArrayList<>();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Employee Manager:");
-        loop: while(true){
+      //add menu interface with scanner, use do while loop
+      ArrayList<Employee> employees = new ArrayList<>();
+      Scanner scanner = new Scanner(System.in);
+      System.out.println("Employee Manager:");
+      loop: while(true){
+        try {
           System.out.println("1.)Create new Salaried Employee");
           System.out.println("2.)Create new Contractual Employee");
           System.out.println("3.)View all Employees");
@@ -53,8 +54,12 @@ public class Main {
             default ->{
                 System.out.println("Please enter options: {1,2,3}!");
             }
-          }
+          } 
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
 
         }
-    }
+
+      }
 }

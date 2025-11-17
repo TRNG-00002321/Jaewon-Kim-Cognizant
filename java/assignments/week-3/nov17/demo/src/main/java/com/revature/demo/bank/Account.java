@@ -1,5 +1,8 @@
 package com.revature.demo.bank;
 
+import com.revature.demo.exceptions.NegativeValueException;
+import com.revature.demo.exceptions.OverDrawExpection;
+
 public abstract  class Account {
     private String id;
     private String name;
@@ -49,10 +52,11 @@ public abstract  class Account {
         return sb.toString();
     }
 
-    public double deposit(double amount){
+    public double deposit(double amount) throws NegativeValueException {
+        if(amount < 0) throw new NegativeValueException();
         this.amount+=amount;
         return this.amount;
     }
 
-    public abstract double withdraw(double amount);
+    public abstract double withdraw(double amount) throws ArithmeticException, OverDrawExpection;
 }

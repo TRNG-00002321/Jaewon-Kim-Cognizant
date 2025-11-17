@@ -1,5 +1,7 @@
 package com.revature.demo.bank;
 
+import com.revature.demo.exceptions.OverDrawExpection;
+
 public class Savings extends Account implements SimpleIntrest {
 
     public Savings(){
@@ -11,7 +13,9 @@ public class Savings extends Account implements SimpleIntrest {
     }
 
     @Override
-    public double withdraw(double amount) {
+    public double withdraw(double amount) throws ArithmeticException, OverDrawExpection {
+        if(amount < 0) throw new ArithmeticException();
+        if((super.getAmount() - amount) < 5000) throw new OverDrawExpection();
         super.setAmount(super.getAmount() - amount);
         return super.getAmount();
     }
