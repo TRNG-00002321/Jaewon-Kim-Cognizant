@@ -1,6 +1,6 @@
 package com.revature.demo.bank;
 
-public class Savings extends Account {
+public class Savings extends Account implements SimpleIntrest {
 
     public Savings(){
 
@@ -21,4 +21,8 @@ public class Savings extends Account {
         return "Savings "+super.toString();
     }
 
+    @Override
+    public double calculateIntrest(double percent) {
+        return super.getAmount()*percent;
+    }
 }
