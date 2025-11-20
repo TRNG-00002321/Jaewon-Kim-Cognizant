@@ -1,0 +1,4 @@
+2025-11-19 13:19:13,671 DEBUG [main] c.e.l.LoggingDemo [LoggingDemo.java:11] - Debug
+2025-11-19 13:19:13,674 INFO [main] c.e.l.LoggingDemo [LoggingDemo.java:12] - Info
+2025-11-19 13:19:13,674 WARN [main] c.e.l.LoggingDemo [LoggingDemo.java:13] - Warn
+2025-11-19 13:19:13,674 ERROR [main] c.e.l.LoggingDemo [LoggingDemo.java:14] - Error
