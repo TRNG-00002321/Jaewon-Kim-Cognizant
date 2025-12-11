@@ -1,6 +1,7 @@
 import json
 import pytest
 from pathlib import Path
+from models import User, Database
 
 
 @pytest.fixture(scope="session")
@@ -29,3 +30,25 @@ def pytest_generate_tests(metafunc):
             cases,
             ids=[c["description"] for c in cases]
         )
+        
+@pytest.fixture
+def user():
+    """Create a standard test user."""
+    return User(
+        id=1,
+        username="testuser",
+        email="test@example.com",
+        role="user"
+    )
+
+
+@pytest.fixture
+def admin_user():
+    """Create an admin test user."""
+    return User(
+        id=99,
+        username="admin",
+        email="admin@example.com",
+        role="admin"
+    )
+    
