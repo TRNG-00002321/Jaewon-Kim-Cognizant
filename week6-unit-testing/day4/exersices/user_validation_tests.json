@@ -1,0 +1,22 @@
+{
+    "valid_emails": [
+        {"email": "user@example.com", "description": "standard email"},
+        {"email": "user.name@domain.co.uk", "description": "email with subdomain"},
+        {"email": "user+tag@example.com", "description": "email with plus sign"}
+    ],
+    "invalid_emails": [
+        {"email": "", "error": "empty", "description": "empty string"},
+        {"email": "noatsign", "error": "missing @", "description": "no at sign"},
+        {"email": "@nodomain", "error": "invalid format", "description": "no local part"},
+        {"email": "user@", "error": "invalid format", "description": "no domain"}
+    ],
+    "valid_passwords": [
+        {"password": "SecurePass123!", "description": "strong password"},
+        {"password": "MyP@ssw0rd", "description": "mixed characters"}
+    ],
+    "invalid_passwords": [
+        {"password": "short", "error": "too short", "description": "under 8 chars"},
+        {"password": "nouppercase123", "error": "no uppercase", "description": "missing uppercase"},
+        {"password": "NOLOWERCASE123", "error": "no lowercase", "description": "missing lowercase"}
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "addition_tests": [
+        {"a": 1, "b": 2, "expected": 3, "description": "simple addition"},
+        {"a": -1, "b": 1, "expected": 0, "description": "negative plus positive"},
+        {"a": 0, "b": 0, "expected": 0, "description": "zeros"},
+        {"a": 100, "b": 200, "expected": 300, "description": "larger numbers"}
+    ],
+    "division_tests": [
+        {"a": 10, "b": 2, "expected": 5.0, "description": "even division"},
+        {"a": 7, "b": 2, "expected": 3.5, "description": "decimal result"},
+        {"a": -10, "b": 2, "expected": -5.0, "description": "negative dividend"}
+    ],
+    "division_by_zero_tests": [
+        {"a": 10, "b": 0, "description": "divide by zero"},
+        {"a": 0, "b": 0, "description": "zero divided by zero"}
+    ]
+}
