@@ -1,0 +1,527 @@
+{
+	"info": {
+		"_postman_id": "c57bc5f1-e9ca-4ce9-bc65-7e266f5d2ab6",
+		"name": "BookHaven API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41715461"
+	},
+	"item": [
+		{
+			"name": "1.Setup",
+			"item": []
+		},
+		{
+			"name": "2.User Operations",
+			"item": []
+		},
+		{
+			"name": "3.Post Operations",
+			"item": [
+				{
+					"name": "GET Post by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test 1: Status code is 200\r",
+									"pm.test(\"Status code is 200\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Status code is in success range\r",
+									"pm.test(\"Status code is success (2xx)\", function() {\r",
+									"    pm.expect(pm.response.code).to.be.within(200, 299);\r",
+									"});\r",
+									"\r",
+									"// Test 3: Status text\r",
+									"pm.test(\"Status message is OK\", function() {\r",
+									"    pm.response.to.have.status(\"OK\");\r",
+									"});\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// Test: Response has required fields\r",
+									"pm.test(\"Response has required fields\", function() {\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\");\r",
+									"    pm.expect(jsonData).to.have.property(\"body\");\r",
+									"    pm.expect(jsonData).to.have.property(\"userId\");\r",
+									"});\r",
+									"\r",
+									"// Test: Data types are correct\r",
+									"pm.test(\"Field types are correct\", function() {\r",
+									"    pm.expect(jsonData.id).to.be.a(\"number\");\r",
+									"    pm.expect(jsonData.title).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.body).to.be.a(\"string\");\r",
+									"    pm.expect(jsonData.userId).to.be.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"// Test: Specific values\r",
+									"pm.test(\"Post ID is 1\", function() {\r",
+									"    pm.expect(jsonData.id).to.equal(1);\r",
+									"});\r",
+									"\r",
+									"// Test: String contains expected content\r",
+									"pm.test(\"Title is not empty\", function() {\r",
+									"    pm.expect(jsonData.title).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"UserId b/t 1-10\", function() {\r",
+									"    pm.expect(jsonData.userId).to.be.within(1, 10);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Title Minimum Length 5\", function() {\r",
+									"    pm.expect(jsonData.title.length).to.be.at.least(5)\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body Contains\", function() {\r",
+									"    pm.expect(jsonData.body).contains(\"rem\")\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is under 500ms\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/1",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET All Posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"// Test: Response is an array\r",
+									"pm.test(\"Response is an array\", function() {\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Test: Array has items\r",
+									"pm.test(\"Array is not empty\", function() {\r",
+									"    pm.expect(jsonData).to.have.length.above(0);\r",
+									"});\r",
+									"\r",
+									"// Test: Array has expected count\r",
+									"pm.test(\"Array has 100 posts\", function() {\r",
+									"    pm.expect(jsonData).to.have.lengthOf(100);\r",
+									"});\r",
+									"\r",
+									"// Test: First item has required structure\r",
+									"pm.test(\"First item has required fields\", function() {\r",
+									"    const firstPost = jsonData[0];\r",
+									"    pm.expect(firstPost).to.have.all.keys(\"userId\", \"id\", \"title\", \"body\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"All items have id\", function() {\r",
+									"    jsonData.forEach((item, index) => {\r",
+									"        pm.expect(item, `Item at index ${index}`).to.have.property(\"id\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"All items have unique id\", function() {\r",
+									"    const ids = new Set();\r",
+									"    jsonData.forEach((item, index) => {\r",
+									"        pm.expect(ids.has(item.id), `Duplicate id found: ${item.id} at index ${index}`).to.be.false;\r",
+									"        ids.add(item.id);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"All items have userId b/t 1 and 10\", function() {\r",
+									"    jsonData.forEach((item, index) => {\r",
+									"        pm.expect(item.userId, `UserId found: ${item.userId} at index ${index}`).to.be.within(1,10);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is under 500ms\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"\r",
+									"// Test: Content-Type header\r",
+									"pm.test(\"Content-Type is JSON\", function() {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"))\r",
+									"        .to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"// Test: Header exists\r",
+									"pm.test(\"Has required headers\", function() {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.response.to.have.header(\"Date\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Has required headers\", function() {\r",
+									"    pm.response.to.have.header(\"Cache-Control\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify Content-Length header exists and is a number\", function() {\r",
+									"    pm.response.to.have.header(\"Content-Length\");\r",
+									"    const contentLength = pm.response.headers.get(\"Content-Length\");\r",
+									"    pm.expect(isNaN(contentLength), `Content-Length is not a number: ${contentLength}`).to.be.false;\r",
+									"    pm.expect(parseInt(contentLength)).to.be.at.least(0);\r",
+									"});\r",
+									"pm.test(\"Status code is 404\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is empty object\", function() {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(Object.keys(jsonData)).to.have.lengthOf(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code is 404\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Posts by User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is under 500ms\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts?userId=1",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST New Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is under 500ms\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"API Testing is Essential\",\r\n    \"body\": \"Every QA engineer should master API testing as it provides fast, reliable validation of backend services.\",\r\n    \"userId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test: Response time is acceptable\r",
+									"pm.test(\"Response time is under 500ms\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Test: Response time range\r",
+									"pm.test(\"Response time is within SLA\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.within(0, 2000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Updated Title - API Testing\",\r\n    \"body\": \"This post has been updated via PUT request\",\r\n    \"userId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/1",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Post",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/1",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET Non-existing Post by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function() {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is under 500ms\", function() {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts/99999",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts",
+								"99999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST New Post with dynamic vars",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const genId = () => {\r",
+									"    const currentDate = new Date();\r",
+									"    return \"ORD-\" + \r",
+									"           currentDate.getFullYear() + \r",
+									"           (currentDate.getMonth() + 1).toString().padStart(2, '0') + \r",
+									"           \"-\" + \r",
+									"           Math.floor(Math.random() * (10000 - 0 + 1)).toString().padStart(4, '0');\r",
+									"}\r",
+									"\r",
+									"const genISBN = () => {\r",
+									"    const currentDate = new Date();\r",
+									"    return \"978\" + \r",
+									"           Math.floor(Math.random() * (10000000000 - 0 + 1)).toString().padStart(10, '0');\r",
+									"}\r",
+									"\r",
+									"const genDatePastMonth = () => {\r",
+									"    const now = new Date();\r",
+									"    const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));\r",
+									"    \r",
+									"    const randomTime = thirtyDaysAgo.getTime() + \r",
+									"                       Math.random() * (now.getTime() - thirtyDaysAgo.getTime());\r",
+									"    \r",
+									"    return new Date(randomTime);\r",
+									"}\r",
+									"\r",
+									"const genDatePastYear = () => {\r",
+									"    const now = new Date();\r",
+									"    const oneYearAgo = new Date(now.getTime() - (365 * 24 * 60 * 60 * 1000));\r",
+									"    \r",
+									"    const randomTime = oneYearAgo.getTime() + \r",
+									"                       Math.random() * (now.getTime() - thirtyDaysAgo.getTime());\r",
+									"    \r",
+									"    return new Date(randomTime);\r",
+									"}\r",
+									"\r",
+									"const genDatePastYear = () => {\r",
+									"    const now = new Date();\r",
+									"    const oneYearFromNow = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000));\r",
+									"    \r",
+									"    return oneYearFromNow;\r",
+									"}\r",
+									"\r",
+									"const getNextMonday = () => {\r",
+									"    const today = new Date();\r",
+									"    const dayOfWeek = today.getDay();\r",
+									"    const daysUntilMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek);\r",
+									"    \r",
+									"    const nextMonday = new Date(today);\r",
+									"    nextMonday.setDate(today.getDate() + daysUntilMonday);\r",
+									"    nextMonday.setHours(0, 0, 0, 0);\r",
+									"    \r",
+									"    return nextMonday;\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Post {{$randomLoremWords}}\",\r\n    \"body\": \"{{$randomLoremParagraph}}\",\r\n    \"userId\": {{$randomInt}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4.Clean-up",
+			"item": []
+		}
+	]
+}
