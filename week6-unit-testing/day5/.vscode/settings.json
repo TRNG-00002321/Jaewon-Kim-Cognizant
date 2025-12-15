@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./lesson/pymock-demo/src",
+        "./lesson/pymock-demo/src/pymock_demo"
+    ]
+}
