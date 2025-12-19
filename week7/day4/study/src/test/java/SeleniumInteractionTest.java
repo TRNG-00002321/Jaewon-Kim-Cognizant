@@ -1,3 +1,5 @@
+import java.time.Duration;
+
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -7,54 +9,73 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class SeleniumInteractionTest {
     private WebDriver driver;
+    private WebDriverWait wait;
     private final String BASE_URL = "https://the-internet.herokuapp.com";
+    
     @BeforeEach
     public void setup(){
         WebDriverManager.chromiumdriver().setup();
-
-        //init webdriver
+        
         driver = new ChromeDriver();
-
         driver.manage().window().maximize();
+        
+        // Initialize WebDriverWait with 10 second timeout
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     @AfterEach
     public void teardown() {
-        //        driver.quit();
-
         if (driver != null) {
             driver.quit();
         }
     }
 
     @Test
-    public void clickInteractionTest() throws InterruptedException{
+    public void clickInteractionTest() {
         driver.get(BASE_URL + "/login");
 
-        WebElement usernameInput = driver.findElement(By.id("username"));
-        if(usernameInput.isDisplayed() && usernameInput.isEnabled()){
-            usernameInput.clear();
-            usernameInput.sendKeys("tomsmith");
-            assertEquals(usernameInput.getAttribute("value"), "tomsmith");
-        }
+        // Wait for username input to be visible and enabled
+        WebElement usernameInput = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.id("username"))
+        );
+        wait.until(ExpectedConditions.elementToBeClickable(usernameInput));
+        
+        usernameInput.clear();
+        usernameInput.sendKeys("tomsmith");
+        assertEquals("tomsmith", usernameInput.getAttribute("value"));
 
-        WebElement passwordInput = driver.findElement(By.id("password"));
-        if(passwordInput.isDisplayed() && passwordInput.isEnabled()){
-            passwordInput.clear();
-            passwordInput.sendKeys("SuperSecretPassword!");
-            assertEquals(passwordInput.getAttribute("value"), "SuperSecretPassword!");
-        }
+        // Wait for password input to be visible and enabled
+        WebElement passwordInput = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.id("password"))
+        );
+        wait.until(ExpectedConditions.elementToBeClickable(passwordInput));
+        
+        passwordInput.clear();
+        passwordInput.sendKeys("SuperSecretPassword!");
+        assertEquals("SuperSecretPassword!", passwordInput.getAttribute("value"));
 
-        WebElement loginButton = driver.findElement(By.xpath("//i[@class='fa fa-2x fa-sign-in']"));
+        // Wait for login button to be clickable
+        WebElement loginButton = wait.until(
+            ExpectedConditions.elementToBeClickable(By.xpath("//i[@class='fa fa-2x fa-sign-in']"))
+        );
         loginButton.click();
 
-        WebElement loginPageText = driver.findElement(By.xpath("//h4[@class='subheader']"));
-        assertTrue(loginPageText.getText().contains("Welcome to the Secure Area. When you are done click logout below.") &&
-                driver.getCurrentUrl().contains("secure"));
+        // Wait for successful login - page text to be visible
+        WebElement loginPageText = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//h4[@class='subheader']"))
+        );
+        
+        // Wait for URL to contain "secure"
+        wait.until(ExpectedConditions.urlContains("secure"));
+        
+        assertTrue(loginPageText.getText().contains("Welcome to the Secure Area. When you are done click logout below."));
+        assertTrue(driver.getCurrentUrl().contains("secure"));
     }
 }
