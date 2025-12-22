@@ -1,4 +1,5 @@
 import java.time.Duration;
+import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -80,6 +81,22 @@ public class SeleniumWaitTest {
         driver.get(BASE_URL+"/dynamic_loading/1");
         driver.findElement(By.xpath("//button[text()='Start']")).click();
 
-        Wait<WebDriver> fluentWait = new FluentWait<>(driver);
+        Wait<WebDriver> fluentWait = new FluentWait<>(driver)
+            .withTimeout(Duration.ofSeconds(10))
+            .pollingEvery(Duration.ofMillis(500))
+            .ignoring(NoSuchElementException.class)
+            .withMessage("Waiting for the result element");
+
+        WebElement result = fluentWait.until(driver -> {
+            WebElement element = driver.findElement(By.xpath("//h4[normalize-space()='Hello World!']"));
+            // Check if element is displayed before returning it
+            if (element.isDisplayed()) {
+                return element;
+            }
+            return null; // Return null to continue waiting
+        });
+
+        String text = result.getText();
+        assertEquals("Hello World!", text);
     }
 }
