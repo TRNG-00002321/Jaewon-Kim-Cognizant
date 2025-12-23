@@ -1,1 +1,14 @@
-target/
+**/target/
+**/.venv/
+**/myenv/
+__pycache__/
+*.pyc
+*.pypy/
+*.pypyc
+*.pypyo
+*.class
+*.jar 
+*.war
+*.ear
+*.zip
+*.tar.gz
