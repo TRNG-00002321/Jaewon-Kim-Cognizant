@@ -56,6 +56,8 @@ public class BasicTest {
         Actions actions = new Actions(driver);
 
         WebElement authLinkCss = driver.findElement(By.cssSelector("a[href='/login']"));
+        WebElement authLinkRelXpath = driver.findElement(By.xpath("//a[text()='Form Authentication']"));
+        actions.keyDown(Keys.CONTROL).click(authLinkRelXpath).keyUp(Keys.CONTROL).perform();
         actions.keyDown(Keys.CONTROL).click(authLinkCss).keyUp(Keys.CONTROL).perform();
         new WebDriverWait(driver, Duration.ofSeconds(10)).until(numberOfWindowsToBe(2));
         for (String windowHandle : driver.getWindowHandles()) {
@@ -65,8 +67,6 @@ public class BasicTest {
         }
         assertEquals(driver.getCurrentUrl(), "https://the-internet.herokuapp.com/login");
 
-        WebElement authLinkRelXpath = driver.findElement(By.xpath("//a[text()='Form Authentication']"));
-        actions.keyDown(Keys.CONTROL).click(authLinkRelXpath).keyUp(Keys.CONTROL).perform();
         new WebDriverWait(driver, Duration.ofSeconds(10)).until(numberOfWindowsToBe(3));
         for (String windowHandle : driver.getWindowHandles()) {
             if (!windowHandle.equals(originalWindow) && !windowHandle.equals(driver.getWindowHandle())) {
